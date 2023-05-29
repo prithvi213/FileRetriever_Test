@@ -14,23 +14,40 @@ Struct Variables
 - files : 
 
 Allocation Functions
-- createNode() : Node *
-- deleteNode(Node **) : void
+- createNode() : Node
+- deleteNode(Node *) : void
 
 Accessor Functions
 - getPath() : String
 - getFileName() : String
 - getSize() : int
 - getPermissions() : int
-- is_dir() : bool
+- isDir() : bool
 - getExtension() : String
 - getFiles() :
 
 Manipulative Functions
 - will plan out soon
 
+Print Function
+- printNode(Node) : void
+
 
 # Stack ADT (stack.h/c)
+Struct Variables
+- will write out soon
+
+Allocation Functions
+- will write out soon
+
+Accessor Functions
+- will write out soon
+
+Manipulative Functions
+- will plan out soon
+
+
+# Graph ADT (graph.h/c)
 Struct Variables
 - will write out soon
 
