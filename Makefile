@@ -1,14 +1,19 @@
 CC = clang
 CFLAGS = -g -Wall -Werror -Wextra -Wpedantic
 
-# Make all the files
-all:
+all: fileretriever
 
-# Remove all binary/executables
+fileretriever: fileretriever.o
+	$(CC) $(CFLAGS) -o fileretriever $^
+
+%.o: %.c
+	$(CC) $(CFLAGS) -c $<
+
 clean:
+	rm -f fileretriever *.o
 
-# Format files
 format:
+	$(CC)-format -i -style=file *.[ch]
 
 scan-build: clean
 	scan-build make
