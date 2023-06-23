@@ -23,16 +23,16 @@ struct NodeObj {
 } NodeObj;
 
 // Allocation Functions
-Node node_create(char *pathName, char *fileName, int size, int permissions, bool isDirectory);
+Node node_create(char *pathName, char *fileName, int size, int permissions, bool isDirectory, char *extension);
 void node_delete(Node *n);
 
 // Accessor Functions
-char *getPath();
-char *getFileName();
-int getSize();
-int getPermissions();
-bool isDir();
-int getExtension();
+char *getPath(Node n);
+char *getFileName(Node n);
+int getSize(Node n);
+int getPermissions(Node n);
+bool isDir(Node n);
+char *getExtension(Node n);
 // Will add getFiles();
 
 // Manipulation Functions (to add later)

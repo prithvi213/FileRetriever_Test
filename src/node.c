@@ -1,6 +1,6 @@
 #include "node.h"
 
-Node node_create(char *pathName, char *fileName, int size, int permissions, bool isDirectory) {
+Node node_create(char *pathName, char *fileName, int size, int permissions, bool isDirectory, char *extension) {
     Node newNode = (Node) malloc(sizeof(NodeObj));
 
     // Initialize the node variables
@@ -10,6 +10,7 @@ Node node_create(char *pathName, char *fileName, int size, int permissions, bool
         newNode->size = size;
         newNode->permissions = permissions;
         newNode->isDirectory = isDirectory;
+        newNode->extension = extension;
     }
 
     return newNode;
@@ -34,4 +35,8 @@ int getPermissions(Node n) {
 
 bool isDir(Node n) {
     return n->isDirectory;
+}
+
+char *getExtension(Node n) {
+    return n->extension;
 }

@@ -3,10 +3,10 @@ CFLAGS = -g -Wall -Werror -Wextra -Wpedantic
 
 all: fileretriever
 
-fileretriever: fileretriever.o
+fileretriever: fileretriever.o node.o
 	$(CC) $(CFLAGS) -o fileretriever $^
 
-%.o: %.c
+%.o: %.c *.h
 	$(CC) $(CFLAGS) -c $<
 
 clean:
