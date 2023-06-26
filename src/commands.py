@@ -22,6 +22,27 @@ def set_search_path(conn, username, pathname):
         conn.close()
         sys.exit(-1)
 
+def load_data(conn, schemafile, datafile):
+    try:
+        cursor = conn.cursor()
+
+        if(schemafile is None or datafile is None):
+            cursor.close()
+            conn.close()
+            return -1
+
+        stmt1 = "\i %s"
+        cursor.execute(stmt1, (schemafile,))
+
+        stmt2 = "\i %s"
+        cursor.execute(stmt2, (datafile,))
+        cursor.close()
+        return 0
+    except:
+        cursor.close()
+        conn.close()
+        sys.exit(-1)
+
 def main():
     pg_hostname = 'cse182-db.lt.ucsc.edu'
     pg_username = sys.argv[1]
@@ -37,7 +58,8 @@ def main():
 
     conn = psycopg2.connect(host=pg_hostname, user=pg_username, password=pg_password)
 
-    set_search_path(conn, username='parunsha', pathname='FileRetriever')
+    #set_search_path(conn, username='parunsha', pathname='FileRetriever')
+    load_data(conn, schemafile='FileRetriever_Test/src/create_fileretriever.sql', datafile='FileRetriever_Test/datafiles/load_testretriever.sql')
 
     conn.close()
     ssh_client.close()
