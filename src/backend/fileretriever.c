@@ -5,7 +5,7 @@
 
 int main() {
     // Initial code used to test database
-    FILE *f = fopen("../datafiles/load_testretriever.sql", "w+");
+    FILE *f = fopen("../database/load_testretriever.sql", "w+");
     fprintf(f, "COPY Files FROM stdin USING DELIMITERS '|';\n");
     char *filename[3] = {"a.text", "b.xls", "c.csv"};
     int filesize[3] = {10, 3, 4};

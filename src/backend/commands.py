@@ -28,14 +28,14 @@ def main():
     conn.commit()
 
     # Step 2: Load the schema file data into PostgreSQL
-    schema_file_path = "/Users/prithvi/Library/CloudStorage/OneDrive-Personal/desktop_clutter/FileRetriever_Test/src/create_fileretriever.sql"
+    schema_file_path = "/Users/prithvi/Library/CloudStorage/OneDrive-Personal/desktop_clutter/FileRetriever_Test/src/database/create_fileretriever.sql"
     with open(schema_file_path, "r") as schema_file:
         schema_sql = schema_file.read()
         cursor.execute(schema_sql)
         conn.commit()
 
     # Step 3: Load the data file into PostgreSQL
-    data_file_path = "/Users/prithvi/Library/CloudStorage/OneDrive-Personal/desktop_clutter/FileRetriever_Test/datafiles/load_testretriever.sql"
+    data_file_path = "/Users/prithvi/Library/CloudStorage/OneDrive-Personal/desktop_clutter/FileRetriever_Test/src/database/load_testretriever.sql"
     data_file = open(data_file_path, "r")
     data_style = data_file.readline()
     data_style = data_style.strip(";\n")
