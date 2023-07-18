@@ -4,21 +4,6 @@ import os
 
 app = Flask(__name__)
 
-'''@app.route('/')
-def get_request():'''
-
-
-'''@app.route('/', methods=['POST'])
-def post_request():
-    post_data = request.get_json()
-    command = 'echo ' + post_data
-    result = subprocess.run(command, shell=True, capture_output=True, text=True)
-    print(result.stdout)'''
-
-'''@app.route('/')
-def execute_command(command):
-    result = subprocess.run(command, shell=True, capture_output=True, text=True)'''
-
 @app.route('/terminal', methods=['GET', 'POST'])
 def terminal():    
     if request.method == 'GET':
@@ -38,8 +23,13 @@ def terminal():
         subprocess.run(make_cmd, check=True)
         subprocess.run(execute_cfile, check=True)
         data = subprocess.run(execute_pythonfile, check=True, capture_output=True)
-        print(data.stdout)
-    return "Done"
+
+        with open("data.txt", "w") as file:
+            file.write(data.stdout.decode('utf-8'))
+
+        response_data = {'OK': 200}
+        response = jsonify(response_data)
+        return response
     
 @app.route('/')
 def index():
