@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int main() {
+int main(void) {
     // Initial code used to test database
     FILE *f = fopen("../database/load_testretriever.sql", "w+");
     fprintf(f, "COPY Files FROM stdin USING DELIMITERS '|';\n");
