@@ -7,7 +7,10 @@ app = Flask(__name__)
 @app.route('/terminal', methods=['GET', 'POST'])
 def terminal():    
     if request.method == 'GET':
-        pass
+        with open("data.txt", "r") as file:
+            content = file.read()
+            print(content)
+            return ""
     else:
         absolute_file_path = '/Users/prithvi/Library/CloudStorage/OneDrive-Personal/desktop_clutter/FileRetriever_Test/src/backend'
         os.chdir(absolute_file_path)

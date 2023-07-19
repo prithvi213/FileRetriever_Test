@@ -6,17 +6,22 @@ function handleClick() {
     }
 
     // HTTP Post Request
-    fetch('/terminal', 
-    {
+    fetch('/terminal', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(data)
     })
-    .then(function(response) {
-        // Handle response
-        
+    .then(response => response.json())
+    .then(data => {
+        fetch('/terminal', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
     })
     .catch(function(error) {
         // Handle error
