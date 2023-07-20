@@ -3,7 +3,6 @@
 import sys
 import paramiko
 import psycopg2
-from tabulate import tabulate
         
 def main():
     # Hostname plus command-line arguments
@@ -47,9 +46,8 @@ def main():
     # Step 4: Print out the loaded data
     print_table = "SELECT * FROM " + schema_name + ";"
     cursor.execute(print_table)
-    columns = [col[0] for col in cursor.description]
     data = cursor.fetchall()
-    print(tabulate(data, headers=columns, tablefmt='grid'))
+    print(data)
     conn.commit()
 
     schema_file.close()
