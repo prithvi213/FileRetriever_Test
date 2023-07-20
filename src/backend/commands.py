@@ -46,7 +46,9 @@ def main():
     # Step 4: Print out the loaded data
     print_table = "SELECT * FROM " + schema_name + ";"
     cursor.execute(print_table)
+    columns = [col[0] for col in cursor.description]
     data = cursor.fetchall()
+    print(columns)
     print(data)
     conn.commit()
 
