@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request
+from flask import Flask, render_template, jsonify, request, make_response
 import subprocess
 import os
 
@@ -9,8 +9,14 @@ def terminal():
     if request.method == 'GET':
         with open("data.txt", "r") as file:
             content = file.read()
-            print(content)
-            return ""
+            body = {"content": content}
+            response = make_response(body)
+            print(response)
+            response.headers['Content-Type'] = request.headers['Content-Type']
+            c = response.data.decode('utf-8')
+            print(c)
+            return response
+            #return jsonify(content)
     else:
         absolute_file_path = '/Users/prithvi/Library/CloudStorage/OneDrive-Personal/desktop_clutter/FileRetriever_Test/src/backend'
         os.chdir(absolute_file_path)

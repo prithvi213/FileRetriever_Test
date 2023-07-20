@@ -13,7 +13,7 @@ function handleClick() {
         },
         body: JSON.stringify(data)
     })
-    .then(response => response.json())
+    .then(response => response.text())
     .then(data => {
         fetch('/terminal', {
             method: 'GET',
@@ -22,6 +22,14 @@ function handleClick() {
             }
         })
         .then(response => response.json())
+        .then(data => {
+            document.getElementById('data').innerHTML = data.content;
+            console.log(data.content)
+        })
+        .catch(function(error) {
+            // Handle error
+            console.log(error);
+        })
     })
     .catch(function(error) {
         // Handle error
