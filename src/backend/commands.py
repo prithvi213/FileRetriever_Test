@@ -52,6 +52,7 @@ def main():
     print(data)
     conn.commit()
 
+    # Step 5: Close everything
     schema_file.close()
     data_file.close()
     cursor.close()

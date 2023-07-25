@@ -11,12 +11,8 @@ def terminal():
             content = file.read()
             body = {"content": content}
             response = make_response(body)
-            print(response)
             response.headers['Content-Type'] = request.headers['Content-Type']
-            c = response.data.decode('utf-8')
-            print(c)
             return response
-            #return jsonify(content)
     else:
         absolute_file_path = '/Users/prithvi/Library/CloudStorage/OneDrive-Personal/desktop_clutter/FileRetriever_Test/src/backend'
         os.chdir(absolute_file_path)
