@@ -6,14 +6,21 @@ app = Flask(__name__)
 
 @app.route('/terminal', methods=['GET', 'POST'])
 def terminal():    
+    # GET Request
     if request.method == 'GET':
+        # open and read the data file
         with open("data.txt", "r") as file:
             content = file.read()
+            
+            # store content in msg body and create the response
             body = {"content": content}
             response = make_response(body)
             response.headers['Content-Type'] = request.headers['Content-Type']
             return response
+        
+    # POST Request
     else:
+        # Set file path and execute fundamental make commands
         absolute_file_path = '/Users/prithvi/Library/CloudStorage/OneDrive-Personal/desktop_clutter/FileRetriever_Test/src/backend'
         os.chdir(absolute_file_path)
         clean_cmd = ['make', 'clean']
@@ -27,8 +34,11 @@ def terminal():
         subprocess.run(clean_cmd, check=True)
         subprocess.run(make_cmd, check=True)
         subprocess.run(execute_cfile, check=True)
+
+        # Store terminal output after running python file (commands.py)
         data = subprocess.run(execute_pythonfile, check=True, capture_output=True)
 
+        # Write terminal output to a textfile and parse response data before sending it over
         with open("data.txt", "w") as file:
             file.write(data.stdout.decode('utf-8'))
 

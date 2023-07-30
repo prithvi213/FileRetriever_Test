@@ -43,11 +43,13 @@ function instantiate() {
             var header_row = document.createElement('tr');
             
             // Create the headers for the table
-            for(var i = 0; i < headers.length; i++) {
+            console.log(headers);
+
+            headers.forEach((header) => {
                 var header_cell = document.createElement('th');
-                header_cell.textContent = headers[i];
+                header_cell.textContent = header;
                 header_row.appendChild(header_cell);
-            }
+            })
             
             // Append headers row to table
             table.appendChild(header_row);
@@ -68,11 +70,8 @@ function instantiate() {
                 var filesize_element = document.createElement('td');
                 filesize_element.textContent = filesize;
                 row.appendChild(filesize_element);
-                
-                table.appendChild(row);
 
-                console.log(filename);
-                console.log(filesize);
+                table.appendChild(row);
             })
         })
         .catch(function(error) {
