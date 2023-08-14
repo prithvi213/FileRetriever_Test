@@ -6,15 +6,23 @@
 #include <sys/stat.h>
 #include <string.h>
 #include <dirent.h>
+#include <unistd.h>
 
 #define ABSOLUTE_FILEDIR_PATH "/Users/prithvi/Library/CloudStorage/OneDrive-Personal/desktop_clutter/FileRetriever_Test/testfiles/"
 
-int main(void) {
+int main(int argc, char **argv) {
+
+    if(argc != 2) {
+        printf("BAD");
+    }
+    char *path_name = argv[1];
+
     // Initial code used to test database
     FILE *f = fopen("../database/load_testretriever.sql", "w+");
     struct dirent* file;
     struct stat file_stat;
-    DIR *directory = opendir(ABSOLUTE_FILEDIR_PATH);
+    //DIR *directory = opendir(ABSOLUTE_FILEDIR_PATH);
+    DIR *directory = opendir(path_name);
 
     fprintf(f, "COPY Files FROM stdin USING DELIMITERS '|';\n");
 
@@ -22,8 +30,8 @@ int main(void) {
         char *filename = file->d_name;
 
         if(strcmp(filename, ".") != 0 && strcmp(filename, "..") != 0 && strcmp(filename, ".DS_Store") != 0) {
-            char path[100] = "";
-            strcat(path, "../../testfiles/");
+            char path[4096] = "";
+            strcat(path, path_name);
             strcat(path, filename);
             if(stat(path, &file_stat) == 0) {
                 int filesize = file_stat.st_size;
@@ -34,16 +42,6 @@ int main(void) {
             }
         }
     }
-
-    
-
-
-    //char *filename[3] = {"a.text", "b.xls", "c.csv"};
-    //int filesize[3] = {10, 3, 4};
-
-    /*for(int i = 0; i < 3; i++) {
-        fprintf(f, "%s|%d\n", filename[i], filesize[i]);
-    }*/
 
     fprintf(f, "\\.\n");
     fclose(f);

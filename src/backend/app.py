@@ -4,8 +4,8 @@ import os
 
 app = Flask(__name__)
 
-@app.route('/terminal', methods=['GET', 'POST'])
-def terminal():    
+@app.route('/submit-path', methods=['GET', 'POST'])
+def submit_path():
     # GET Request
     if request.method == 'GET':
         # open and read the data file
@@ -23,11 +23,12 @@ def terminal():
         # Set file path and execute fundamental make commands
         absolute_file_path = '/Users/prithvi/Library/CloudStorage/OneDrive-Personal/desktop_clutter/FileRetriever_Test/src/backend'
         os.chdir(absolute_file_path)
+        json_data = request.get_json()
+        path_name = json_data['path']
         clean_cmd = ['make', 'clean']
         make_cmd = ['make', 'all']
-        execute_cfile = ['./fileretriever']
+        execute_cfile = ['./fileretriever', path_name]
 
-        json_data = request.get_json()
         python_cmd = json_data['command']
         execute_pythonfile = python_cmd.split(' ')
         
@@ -45,11 +46,13 @@ def terminal():
         response_data = {'OK': 200}
         response = jsonify(response_data)
         return response
+
     
 @app.route('/')
 def index():
     # Replace the command with the desired terminal command
     return render_template('index.html')
+
 
 if __name__ == "__main__":
     app.run(debug=True)
