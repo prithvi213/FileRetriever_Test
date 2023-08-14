@@ -1,3 +1,5 @@
+let table_created = false;
+
 function submit_path() {
     const form = document.getElementById('submit-path');
 
@@ -44,23 +46,27 @@ function submit_path() {
             const headers = JSON.parse(valid_header_string);
             
             var table = document.getElementById('data-table');
-            var header_row = document.createElement('tr');
-            
-            // Create the headers for the table
-            console.log(headers);
 
-            headers.forEach((header) => {
-                var header_cell = document.createElement('th');
-                header_cell.textContent = header;
-                header_row.appendChild(header_cell);
-            })
+            if(!table_created) {
+                var header_row = document.createElement('tr');
+                
+                // Create the headers for the table
+                headers.forEach((header) => {
+                    var header_cell = document.createElement('th');
+                    header_cell.textContent = header;
+                    header_row.appendChild(header_cell);
+                })
             
-            // Append headers row to table
-            table.appendChild(header_row);
-
+                // Append headers row to table
+                table.appendChild(header_row);
+                table_created = true;
+            }
+            
+            while(table.rows.length > 1) {
+                table.deleteRow(1);
+            }
             var parsable_string = split_table[1];
             filedata_array = parsable_string.split("), (").join(")|(").substring(1, parsable_string.length - 1).split('|');
-            console.log(filedata_array);
 
             filedata_array.forEach((element) => {
                 var filename = element.substring(2, element.lastIndexOf(',') - 1);
