@@ -1,0 +1,6 @@
+table, td, tr, th {
+    border-color: black;
+    border-collapse: collapse;
+    border-style: solid;
+    background-color: yellow;
+}
