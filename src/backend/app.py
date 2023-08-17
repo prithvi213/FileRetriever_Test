@@ -38,7 +38,6 @@ def submit_path():
 
         # Store terminal output after running python file (commands.py)
         data = subprocess.run(execute_pythonfile, check=True, capture_output=True)
-        #subprocess.run(execute_pythonfile, check=True)
 
         # Write terminal output to a textfile and parse response data before sending it over
         with open("data.txt", "w") as file:
