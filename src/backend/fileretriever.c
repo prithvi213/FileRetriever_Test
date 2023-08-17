@@ -21,7 +21,6 @@ int main(int argc, char **argv) {
     FILE *f = fopen("../database/load_testretriever.sql", "w+");
     struct dirent* file;
     struct stat file_stat;
-    //DIR *directory = opendir(ABSOLUTE_FILEDIR_PATH);
     DIR *directory = opendir(path_name);
 
     fprintf(f, "COPY Files FROM stdin USING DELIMITERS '|';\n");

@@ -9,11 +9,9 @@ function submit_path() {
 
     const path_name = document.getElementById("path-name").value;
     const data = {
-        command: "python3 commands.py parunsha Ha\!l0w3en3rrr encryption33link",
+        command: "python3 commands.py localhost prithvi FileRetriever",
         path: path_name
     }
-    // HTTP Post Request
-    console.log(path_name);
 
     // HTTP Post Request
     fetch('/submit-path', {
@@ -38,7 +36,6 @@ function submit_path() {
             const data_content = data.content;
             const split_table = data_content.split('\n');
             split_table.pop();
-            console.log(split_table);
             
             // Parse headers
             const header_string = split_table[0];
@@ -65,6 +62,7 @@ function submit_path() {
             while(table.rows.length > 1) {
                 table.deleteRow(1);
             }
+
             var parsable_string = split_table[1];
             filedata_array = parsable_string.split("), (").join(")|(").substring(1, parsable_string.length - 1).split('|');
 

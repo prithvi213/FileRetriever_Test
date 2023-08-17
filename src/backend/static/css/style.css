@@ -2,5 +2,7 @@ table, td, tr, th {
     border-color: black;
     border-collapse: collapse;
     border-style: solid;
+    text-align: center;
+    vertical-align: middle;
     background-color: yellow;
 }

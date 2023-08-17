@@ -3,35 +3,55 @@
 import sys
 import paramiko
 import psycopg2
+from psycopg2 import Error
         
 def main():
     # Hostname plus command-line arguments
-    pg_hostname = 'cse182-db.lt.ucsc.edu'
-    pg_username = sys.argv[1]
-    ucsc_password = sys.argv[2]
-    pg_password = sys.argv[3]
+    #pg_hostname = 'cse182-db.lt.ucsc.edu'
+    #pg_hostname = sys.argv[1]
+    #pg_username = sys.argv[2]
+    #ucsc_password = sys.argv[3]
+    #pg_password = sys.argv[4]
+    pg_hostname = sys.argv[1]
+    #pg_port = sys.argv[2]
+    pg_username = sys.argv[2]
+    pg_dbname = sys.argv[3]
 
     # Steps needed to connect to UCSC Unix Server
-    ssh_client = paramiko.SSHClient()
+    '''ssh_client = paramiko.SSHClient()
     ssh_client.load_system_host_keys()
     ssh_client.get_host_keys().add('unix.ucsc.edu', 'ssh-rsa', 'hostkey')
     ssh_client.set_missing_host_key_policy(paramiko.WarningPolicy())
-    ssh_client.connect('unix.ucsc.edu', username=pg_username, password=ucsc_password)
+    ssh_client.connect('unix.ucsc.edu', username=pg_username, password=ucsc_password)'''
 
-    # Steps needed to connect to PostgreSQL server in Unix server
-    conn = psycopg2.connect(host=pg_hostname, user=pg_username, password=pg_password)
-    cursor = conn.cursor()
+    try:
+        # Steps needed to connect to PostgreSQL server in Unix server
+        conn = psycopg2.connect(host=pg_hostname, user=pg_username, password="", dbname=pg_dbname)
+        cursor = conn.cursor()
+    except Error as e:
+        print("cannot connect")
+        print(e)
 
     # Step 1: Alter the ROLE
-    cursor.execute("ALTER ROLE parunsha SET search_path TO FileRetriever;")
-    conn.commit()
+    try:
+        cursor.execute("ALTER ROLE prithvi SET search_path TO fileretrieve;")
+        conn.commit()
+    except psycopg2.Error as e:
+        conn.rollback()
+        print(e)
 
     # Step 2: Load the schema file data into PostgreSQL
     schema_file_path = "/Users/prithvi/Library/CloudStorage/OneDrive-Personal/desktop_clutter/FileRetriever_Test/src/database/create_fileretriever.sql"
-    with open(schema_file_path, "r") as schema_file:
-        schema_sql = schema_file.read()
-        cursor.execute(schema_sql)
-        conn.commit()
+
+    try:
+        with open(schema_file_path, "r") as schema_file:
+            schema_sql = schema_file.read()
+            cursor.execute(schema_sql)
+            conn.commit()
+    except psycopg2.Error as e:
+        print(cursor.statusmessage)
+        conn.rollback()
+        print(e)
 
     # Step 3: Load the data file into PostgreSQL
     data_file_path = "/Users/prithvi/Library/CloudStorage/OneDrive-Personal/desktop_clutter/FileRetriever_Test/src/database/load_testretriever.sql"
@@ -57,7 +77,7 @@ def main():
     data_file.close()
     cursor.close()
     conn.close()
-    ssh_client.close()
+    #ssh_client.close()
 
 if __name__ == '__main__':
     main()
