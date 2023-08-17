@@ -81,6 +81,10 @@ function submit_path() {
 
                 table.appendChild(row);
             })
+
+            var file_count = table.querySelectorAll('tr').length - 1;
+            var count_elem = document.getElementById('count');
+            count_elem.textContent = 'File Count: ' + file_count;
         })
         .catch(function(error) {
             // Handle error
