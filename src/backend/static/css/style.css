@@ -1,3 +1,7 @@
+body {
+    background-color: black;
+}
+
 table, td, tr, th {
     border-color: black;
     border-collapse: collapse;
@@ -5,4 +9,22 @@ table, td, tr, th {
     text-align: center;
     vertical-align: middle;
     background-color: yellow;
+}
+
+.table-container {
+    padding: 20px;
+    margin-top: 20px;
+    height: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#path-name {
+    width: 650px;
+}
+
+#count {
+    color: white;
 }
