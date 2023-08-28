@@ -4,7 +4,12 @@ import sys
 import paramiko
 import psycopg2
 from psycopg2 import Error
-        
+import re
+import json
+
+def replace_double_backslashes(input_string):
+    return re.sub(r'\\\\', r'\\', input_string)
+
 def main():
     # Hostname plus command-line arguments
     pg_hostname = sys.argv[1]
@@ -53,9 +58,28 @@ def main():
         conn.rollback()
         print(e)
 
-    # Step 4: Print out the loaded data
+    # Step 4: Load query file
     try:
-        print_table = "SELECT * FROM " + schema_name + " f ORDER BY f.filesize DESC, f.filename;"
+        query_file_path = '../database/queries_testretriever.sql'
+        
+        with open(query_file_path, 'r') as query_file:
+            for line in query_file:
+                filename = line[48:line.rfind(':') - 1]
+                new_filename = filename.replace("'", "''")
+                new_filename = new_filename.replace(":", "/")
+                line = line.replace(filename, new_filename)
+                colon_index = line.rfind(':')
+                line = line[0:colon_index] + ', ' + line[colon_index+1:]
+                cursor.execute(line)
+
+        conn.commit()
+    except psycopg2.Error as e:
+        conn.rollback()
+        print(e)
+
+    # Step 5: Print out the loaded data
+    try:
+        print_table = "SELECT f.filename, f.filesize FROM " + schema_name + " f ORDER BY f.filesize DESC, f.filename;"
         cursor.execute(print_table)
         data = cursor.fetchall()
         columns = [col[0] for col in cursor.description]
@@ -66,8 +90,9 @@ def main():
         conn.rollback()
         print(e)
 
-    # Step 5: Close everything
+    # Step 6: Close everything
     schema_file.close()
+    query_file.close()
     data_file.close()
     cursor.close()
     conn.close()

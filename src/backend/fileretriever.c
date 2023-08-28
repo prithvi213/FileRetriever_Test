@@ -8,8 +8,6 @@
 #include <dirent.h>
 #include <unistd.h>
 
-#define ABSOLUTE_FILEDIR_PATH "/Users/prithvi/Library/CloudStorage/OneDrive-Personal/desktop_clutter/FileRetriever_Test/testfiles/"
-
 int main(int argc, char **argv) {
 
     if(argc != 2) {
@@ -19,11 +17,12 @@ int main(int argc, char **argv) {
 
     // Initial code used to test database
     FILE *f = fopen("../database/load_testretriever.sql", "w+");
+    FILE *q = fopen("../database/queries_testretriever.sql", "w+");
     struct dirent* file;
     struct stat file_stat;
     DIR *directory = opendir(path_name);
 
-    fprintf(f, "COPY Files FROM stdin USING DELIMITERS '|';\n");
+    fprintf(f, "COPY Files FROM stdin USING DELIMITERS ':';\n");
 
     while((file = readdir(directory)) != NULL) {
         char *filename = file->d_name;
@@ -34,7 +33,7 @@ int main(int argc, char **argv) {
             strcat(path, filename);
             if(stat(path, &file_stat) == 0) {
                 int filesize = file_stat.st_size;
-                fprintf(f, "%s|%d\n", filename, filesize);
+                fprintf(q, "INSERT INTO Files (filename, filesize) VALUES ('%s':%d);\n", filename, filesize);
             } else {
                 printf("%s\n", path);
                 perror("Error with stat");
@@ -42,7 +41,6 @@ int main(int argc, char **argv) {
         }
     }
 
-    fprintf(f, "\\.\n");
     fclose(f);
     return 0;
 }

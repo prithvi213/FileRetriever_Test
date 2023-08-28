@@ -1,5 +1,10 @@
 let table_created = false;
 
+function has_double_backslashes(filename) {
+    const expr = /\\\\/;
+    return expr.test(filename);
+}
+
 function submit_path() {
     const form = document.getElementById('submit-path');
 
@@ -64,10 +69,15 @@ function submit_path() {
             }
 
             var parsable_string = split_table[1];
-            filedata_array = parsable_string.split("), (").join(")|(").substring(1, parsable_string.length - 1).split('|');
+            filedata_array = parsable_string.split("), (").join("):(").substring(1, parsable_string.length - 1).split(':');
 
             filedata_array.forEach((element) => {
                 var filename = element.substring(2, element.lastIndexOf(',') - 1);
+
+                if(has_double_backslashes(filename)) {
+                    filename = filename.replace(/\\\\/g, "\\");
+                }
+
                 var filesize = parseInt(element.substring(element.lastIndexOf(',') + 2, element.length - 1));
                 
                 var row = document.createElement('tr');
