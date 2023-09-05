@@ -1,14 +1,8 @@
 #! /usr/bin/env python
 
 import sys
-import paramiko
 import psycopg2
 from psycopg2 import Error
-import re
-import json
-
-def replace_double_backslashes(input_string):
-    return re.sub(r'\\\\', r'\\', input_string)
 
 def main():
     # Hostname plus command-line arguments
@@ -64,7 +58,7 @@ def main():
         
         with open(query_file_path, 'r') as query_file:
             for line in query_file:
-                filename = line[48:line.rfind(':') - 1]
+                filename = line[59:line.rfind(':') - 1]
                 new_filename = filename.replace("'", "''")
                 new_filename = new_filename.replace(":", "/")
                 line = line.replace(filename, new_filename)
@@ -79,7 +73,7 @@ def main():
 
     # Step 5: Print out the loaded data
     try:
-        print_table = "SELECT f.filename, f.filesize FROM " + schema_name + " f ORDER BY f.filesize DESC, f.filename;"
+        print_table = "SELECT * FROM " + schema_name + " f ORDER BY f.filesize DESC, f.filename;"
         cursor.execute(print_table)
         data = cursor.fetchall()
         columns = [col[0] for col in cursor.description]

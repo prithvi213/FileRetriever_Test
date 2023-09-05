@@ -33,7 +33,15 @@ int main(int argc, char **argv) {
             strcat(path, filename);
             if(stat(path, &file_stat) == 0) {
                 int filesize = file_stat.st_size;
-                fprintf(q, "INSERT INTO Files (filename, filesize) VALUES ('%s':%d);\n", filename, filesize);
+                char *directory;
+
+                if(S_ISDIR(file_stat.st_mode)) {
+                    directory = "yes";
+                } else {
+                    directory = "no";
+                }
+
+                fprintf(q, "INSERT INTO Files (filename, filesize, directory) VALUES ('%s':%d, '%s');\n", filename, filesize, directory);
             } else {
                 printf("%s\n", path);
                 perror("Error with stat");

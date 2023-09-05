@@ -68,18 +68,20 @@ function submit_path() {
                 table.deleteRow(1);
             }
 
-            var parsable_string = split_table[1];
-            filedata_array = parsable_string.split("), (").join("):(").substring(1, parsable_string.length - 1).split(':');
-
-            filedata_array.forEach((element) => {
-                var filename = element.substring(2, element.lastIndexOf(',') - 1);
+            var filedata_array = split_table[1];
+            filedata_array = filedata_array.split("), (").join("):(").substring(1, filedata_array.length - 1).split(':');
+            filedata_array[filedata_array.length - 1] = filedata_array[filedata_array.length - 1].slice(0, -1);
+            
+            filedata_array.map(function(element) {
+                var parsed_tuple = element.slice(1, -1).split(", ");
+                var filename = parsed_tuple[0].slice(1, -1);
+                var filesize = parseInt(parsed_tuple[1]);
+                var directory = parsed_tuple[2].slice(1, -1);
 
                 if(has_double_backslashes(filename)) {
                     filename = filename.replace(/\\\\/g, "\\");
                 }
 
-                var filesize = parseInt(element.substring(element.lastIndexOf(',') + 2, element.length - 1));
-                
                 var row = document.createElement('tr');
                 var filename_element = document.createElement('td');
                 filename_element.textContent = filename;
@@ -89,8 +91,12 @@ function submit_path() {
                 filesize_element.textContent = filesize;
                 row.appendChild(filesize_element);
 
+                var directory_element = document.createElement('td');
+                directory_element.textContent = directory;
+                row.appendChild(directory_element);
+
                 table.appendChild(row);
-            })
+            });
 
             var file_count = table.querySelectorAll('tr').length - 1;
             var count_elem = document.getElementById('count');
